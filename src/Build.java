@@ -57,8 +57,19 @@ public class Build {
    * @param <T> the type of values stored in the vertices
    */
   public static <T> void printSelfLoopers(Vertex<T> vertex) {
+    Set<Vertex> seen = new HashSet<>();
+    printSelfLoopers(vertex, seen);
   }
-
+  public static <T> void printSelfLoopers(Vertex<T> vertex, Set<Vertex> seen) {
+    if (vertex == null) return;
+    if (seen.contains(vertex)) return;
+    seen.add(vertex);
+    if (vertex.neighbors == null) return;
+    for (Vertex<T> x : vertex.neighbors) {
+      if (x == vertex) System.out.println(vertex.data);
+      printSelfLoopers(x, seen);
+    }
+  }
   /**
    * Determines whether it is possible to reach the destination airport through a series of flights
    * starting from the given airport. If the start and destination airports are the same, returns true.
